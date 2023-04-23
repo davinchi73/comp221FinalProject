@@ -46,8 +46,8 @@
   }
 }]]></component>
   <component name="RunManager" selected="Application.Kruskal">
-    <configuration name="Algorithms" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="race.Algorithms" />
+    <configuration name="Dijkstra" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="race.Dijkstra" />
       <module name="comp221FinalProject" />
       <extension name="coverage">
         <pattern>
@@ -75,7 +75,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Kruskal" />
-        <item itemvalue="Application.Algorithms" />
+        <item itemvalue="Application.Dijkstra" />
       </list>
     </recent_temporary>
   </component>

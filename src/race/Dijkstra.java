@@ -2,11 +2,11 @@ package race;
 
 import java.util.*;
 
-public class Algorithms{
+public class Dijkstra {
 
     public static void main(String[] args) {
         float[][] g = new float[][]{{1,3},{1,4},{2,5},{4,5},{2,7}};
-        Algorithms.djiskstras(g,0,3);
+        Dijkstra.djiskstras(g,0,3);
     }
 
     /**

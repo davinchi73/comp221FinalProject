@@ -11,12 +11,12 @@ public class Kruskal {
         Kruskal.Kruskal(g,0,2);
     }
     private static void Kruskal(float[][] g, int start, int end){
-        /**
-         * Add lowest val edge
-         * Add next lowest val edge that adds a point
-         * If a point (other than start and end) has two edges connecting it,
-         * it no longer should be considered
-         * Start and end points are removed after they get one edge
+        /*
+          Add lowest val edge
+          Add next lowest val edge that adds a point
+          If a point (other than start and end) has two edges connecting it,
+          it no longer should be considered
+          Start and end points are removed after they get one edge
          */
         double[][] edges = calcEdges(g);
         boolean[] remainingPoints = new boolean[g.length];
@@ -32,6 +32,8 @@ public class Kruskal {
             vertices[lowestEdge[0]].addEdge(lowestEdge[1]);
             vertices[lowestEdge[1]].addEdge(lowestEdge[0]); //add the edge
             connectedPoints++;
+
+            //checks to see if any vertexes should be removed from the options
             if (lowestEdge[0]==start||lowestEdge[0]==end){
                 remainingPoints[lowestEdge[0]]=false;
             } else if (vertices[lowestEdge[0]].getNumOfConnections()==2){
@@ -109,14 +111,12 @@ public class Kruskal {
         }
     }
 
-
-
     private static int[] getLowestRemainingEdge(double[][] edges, boolean[] remainingPoints, Vertex[] vertices, int start, int end){
         double lowestEdge = Double.POSITIVE_INFINITY;
         int[] coords = new int[2];
         for (int i = 0; i < remainingPoints.length; i++) {
             if (!remainingPoints[i]) continue;
-
+            
             for (int j = i+1; j < edges[i].length; j++) {
                 if (!remainingPoints[j]) continue;
 
@@ -138,7 +138,7 @@ public class Kruskal {
 
         for (int i = 0; i < g.length; i++) {
             for (int j = i+1; j < g.length; j++) {
-                weights[i][j] = Algorithms.getDistance(g[i],g[j]);
+                weights[i][j] = Dijkstra.getDistance(g[i],g[j]);
                 weights[j][i] = weights[i][j];
             }
         }
