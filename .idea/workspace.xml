@@ -5,6 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3cf52903-25ca-4234-a53c-09e0019db054" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/comp221FinalProject/race/Algorithms.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/comp221FinalProject/race/Algorithms.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/race/Algorithms.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/race/Algorithms.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/race/testClass.java" beforeDir="false" />
     </list>
@@ -43,7 +45,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Kruskal">
     <configuration name="Algorithms" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="race.Algorithms" />
       <module name="comp221FinalProject" />
@@ -57,8 +59,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Kruskal" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="race.Kruskal" />
+      <module name="comp221FinalProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="race.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Kruskal" />
         <item itemvalue="Application.Algorithms" />
       </list>
     </recent_temporary>
@@ -71,7 +87,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1682029371179</updated>
-      <workItem from="1682029372440" duration="6559000" />
+      <workItem from="1682029372440" duration="12962000" />
     </task>
     <servers />
   </component>

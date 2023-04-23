@@ -107,7 +107,7 @@ public class Algorithms{
             return 0;
         }
     }
-    private static double getDistance(float[] a, float[] b){
+    static double getDistance(float[] a, float[] b){
         return Math.sqrt(Math.pow(a[0]-b[0],2)+Math.pow(a[1]-b[1],2));
     }
 
