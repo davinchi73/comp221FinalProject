@@ -5,10 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3cf52903-25ca-4234-a53c-09e0019db054" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/race/AlgoVertex.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/comp221FinalProject/race/Algorithms.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/comp221FinalProject/race/Algorithms.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/race/Algorithms.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/race/Algorithms.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/race/testClass.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/comp221FinalProject/race/AlgoTest$Vertex.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/comp221FinalProject/race/AlgoTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/comp221FinalProject/race/Algorithms$Vertex.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/comp221FinalProject/race/Algorithms$VertexComp.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/comp221FinalProject/race/Algorithms.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/race/Kruskal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/race/Kruskal.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +91,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1682029371179</updated>
-      <workItem from="1682029372440" duration="12962000" />
+      <workItem from="1682029372440" duration="19031000" />
     </task>
     <servers />
   </component>

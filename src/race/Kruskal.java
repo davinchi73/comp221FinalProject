@@ -7,8 +7,9 @@ import java.util.List;
 public class Kruskal {
 
     public static void main(String[] args) {
-        float[][] g = new float[][]{{1,3},{1,4},{2,5},{4,5},{2,7}};
+        float[][] g = new float[][]{{1,3},{1,4},{2,5},{4,5},{2,7},{2,3},{0,2}};
         Kruskal.Kruskal(g,0,2);
+        Kruskal.Kruskal(g,2,0);
     }
     private static void Kruskal(float[][] g, int start, int end){
         /*
@@ -19,30 +20,23 @@ public class Kruskal {
           Start and end points are removed after they get one edge
          */
         double[][] edges = calcEdges(g);
-        boolean[] remainingPoints = new boolean[g.length];
-        Arrays.fill(remainingPoints,true);
-        Vertex[] vertices = new Vertex[g.length]; // will use this to do path reconstruction
+        AlgoVertex[] vertices = new AlgoVertex[g.length]; // will use this to do path reconstruction
         for (int i = 0; i < vertices.length; i++) {
-            vertices[i] = new Vertex(i);
+            vertices[i] = new AlgoVertex(i);
         }
 
         int connectedPoints = 0;
         while (connectedPoints<g.length-1){
-            int[] lowestEdge = getLowestRemainingEdge(edges,remainingPoints,vertices,start,end);
+            int[] lowestEdge = getLowestRemainingEdge(edges,vertices,start,end);
             vertices[lowestEdge[0]].addEdge(lowestEdge[1]);
             vertices[lowestEdge[1]].addEdge(lowestEdge[0]); //add the edge
             connectedPoints++;
 
             //checks to see if any vertexes should be removed from the options
-            if (lowestEdge[0]==start||lowestEdge[0]==end){
-                remainingPoints[lowestEdge[0]]=false;
-            } else if (vertices[lowestEdge[0]].getNumOfConnections()==2){
-                remainingPoints[lowestEdge[0]]=false;
-            }
-            if (lowestEdge[1]==start||lowestEdge[1]==end){
-                remainingPoints[lowestEdge[1]]=false;
-            } else if (vertices[lowestEdge[1]].getNumOfConnections()==2){
-                remainingPoints[lowestEdge[1]]=false;
+            for (int index : lowestEdge) {
+                if (index==start||index==end||vertices[index].getNumOfConnections()==2){
+                    vertices[index].setAsVisited();
+                }
             }
             System.out.println("added edge: " + Arrays.toString(lowestEdge));
             System.out.println("length: "+ edges[lowestEdge[0]][lowestEdge[1]]);
@@ -50,7 +44,11 @@ public class Kruskal {
         reconstructPath(vertices,start,end);
     }
 
-    private static List<Integer> reconstructPath(Vertex[] vertices, int start, int end){
+    /**
+     * @return the path of vertices that Kruskal's gives
+     */
+    private static List<Integer> reconstructPath(AlgoVertex[] vertices, int start, int end){
+        System.out.println();
         System.out.print("path : " + start);
         List<Integer> path = new ArrayList<>();
         path.add(start);
@@ -68,31 +66,48 @@ public class Kruskal {
             path.add(currVertex);
             System.out.print(", "+currVertex);
         }
+        System.out.println();
+        System.out.println();
         return path;
     }
-    private static boolean canBeAdded(Vertex[] vertices, int[] edge, int start, int end){
-        System.out.println("edge that we are checking: " +Arrays.toString(edge));
-        if ((edge[0]==start&&edge[1]==end)||(edge[1]==start&&edge[0]==end))
+
+    /**
+     * I apologize for this method, it's so annoying, but IDK if I can simplify it much better
+     * Although, I will look into ways to avoid some code duplication
+     */
+    private static boolean canBeAdded(AlgoVertex[] vertices, int[] edge, int start, int end){
+        if ((edge[0]==start&&edge[1]==end)||(edge[1]==start&&edge[0]==end)) // can't go straight from start to end
             return false;
-        if (vertices[start].getNumOfConnections()==0) {
-            if (edge[0]!=start&&edge[1]!=start)
-                return true;
-        }
-        if (vertices[end].getNumOfConnections()==0) {
-            if (edge[0]!=end&&edge[1]!=end)
-                return true;
-        }
-        /**
-         * follow path from start, if all vertices would be closed on the path, then this can't be added
-         */
         int currVertex = start;
         int prevVertex = start;
-        while (true){
-            if (currVertex == edge[0]){
-                if (edge[1]==end){
-                    return false; // this means our path goes from start to the end without any conflict
+        if (vertices[start].getNumOfConnections()==0) {
+            boolean b = edge[0] == start;
+            if (!b && edge[1] != start) //If start is open, we can always add an edge that doesn't connect to start
+                return true;
+            else {
+                int index = b ? 1 : 0; // my boy dex coming in clutch with the reminder about ternary operators
+                if (vertices[edge[index]].getNumOfConnections() == 0) return true; //if the part of the edge that isn't the start is open, we can go ahead and add the edge
+                else {
+                    currVertex = edge[index];
+                    prevVertex = edge[index];
                 }
             }
+        }
+        if (vertices[end].getNumOfConnections()==0) {
+            boolean b = edge[0] == end;
+            int index = b ? 1:0;
+            if (!b&&edge[1]!=end)
+                return true;
+            else if (vertices[edge[index]].getNumOfConnections()==0)
+                return true;
+        }
+        /*
+         * follow path from start, if all vertices would be closed on the path, then this can't be added
+         */
+        while (true){
+            if (currVertex == edge[0] && edge[1]==end) return false; // this means our path goes from start to the end, which we don't want
+            else if (currVertex == edge[1] && edge[0]==end)  return false;
+
             if (prevVertex == vertices[currVertex].connections.get(0)){
                 if (vertices[currVertex].getNumOfConnections()==1){
                     return true;
@@ -103,7 +118,6 @@ public class Kruskal {
                 prevVertex = currVertex;
                 currVertex = vertices[currVertex].connections.get(0);
             }
-            System.out.println("going from: " +prevVertex+" to: "+currVertex);
 
             if (currVertex == end){
                 return false;
@@ -111,14 +125,14 @@ public class Kruskal {
         }
     }
 
-    private static int[] getLowestRemainingEdge(double[][] edges, boolean[] remainingPoints, Vertex[] vertices, int start, int end){
+    private static int[] getLowestRemainingEdge(double[][] edges, AlgoVertex[] vertices, int start, int end){
         double lowestEdge = Double.POSITIVE_INFINITY;
         int[] coords = new int[2];
-        for (int i = 0; i < remainingPoints.length; i++) {
-            if (!remainingPoints[i]) continue;
-            
+        for (int i = 0; i < vertices.length; i++) {
+            if (vertices[i].isVisited()) continue;
+
             for (int j = i+1; j < edges[i].length; j++) {
-                if (!remainingPoints[j]) continue;
+                if (vertices[j].isVisited()) continue;
 
                 if (edges[i][j]<lowestEdge){
                     if (!canBeAdded(vertices,new int[]{i,j},start,end)) continue;
@@ -129,7 +143,6 @@ public class Kruskal {
                 }
             }
         }
-        System.out.println("lowest edge: "+ Arrays.toString(coords));
         return coords;
     }
 
@@ -144,22 +157,5 @@ public class Kruskal {
         }
 
         return weights;
-    }
-
-    private static class Vertex{
-        final int index;
-        List<Integer> connections;
-        private Vertex(int index){
-            this.index = index;
-            connections = new ArrayList<>();
-        }
-
-        private void addEdge(int vertex){
-            connections.add(vertex);
-        }
-
-        int getNumOfConnections(){
-            return connections.size();
-        }
     }
 }
