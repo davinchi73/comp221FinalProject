@@ -48,8 +48,6 @@ public class Kruskal {
      * @return the path of vertices that Kruskal's gives
      */
     private static List<Integer> reconstructPath(AlgoVertex[] vertices, int start, int end){
-        System.out.println();
-        System.out.print("path : " + start);
         List<Integer> path = new ArrayList<>();
         path.add(start);
         int currVertex = start;
@@ -64,10 +62,8 @@ public class Kruskal {
                 currVertex = vertices[currVertex].connections.get(0);
             }
             path.add(currVertex);
-            System.out.print(", "+currVertex);
         }
-        System.out.println();
-        System.out.println();
+        System.out.println(path);
         return path;
     }
 
