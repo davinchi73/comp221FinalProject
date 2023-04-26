@@ -10,7 +10,7 @@ public class Final_Project {
         canvas = new CanvasWindow("Race", 1000, 1000);
         Color skyBlue = new Color(135, 206, 235);
         canvas.setBackground(skyBlue);
-
+        
         
     }
 }
