@@ -15,20 +15,18 @@ public class Final_Project {
 
         Color skyBlue = new Color(135, 206, 235);
         canvas.setBackground(skyBlue);
-<<<<<<< Updated upstream
-        
-=======
 
         canvas.onClick(event -> placeDots(event.getPosition()));
     }
 
     private static void placeDots(Point point) {
->>>>>>> Stashed changes
         
         Dot dot = new Dot(point.getX(), point.getY(), 5);
 
         canvas.add(dot);
-        listOfDots.add(point);
+        listOfDots.add(dot);
+
+        System.out.println(listOfDots);
 
     }
 }
