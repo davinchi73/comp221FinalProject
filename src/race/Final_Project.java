@@ -25,16 +25,18 @@ public class Final_Project {
     }
 
     private static void placeDots(Point point) {
-        
-        Dot dot = new Dot(point.getX(), point.getY(), 10);
+        if (listOfDots.size() < 15) {
+            Dot dot = new Dot(point.getX(), point.getY(), 10);
 
-        canvas.add(dot);
-        listOfDots.add(point);
-
-        if (listOfDots.size() == 10) {
-            canvas.add(calcPath);
+            canvas.add(dot);
+            listOfDots.add(point);
+    
+            if (listOfDots.size() == 8) {
+                canvas.add(calcPath);
+            }
+            System.out.println(listOfDots);
         }
-        System.out.println(listOfDots);
+
 
     }
 }
