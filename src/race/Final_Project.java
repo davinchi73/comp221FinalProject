@@ -25,6 +25,7 @@ public class Final_Project {
     }
 
     private static void placeDots(Point point) {
+<<<<<<< Updated upstream
         if (listOfDots.size() < 15) {
             Dot dot = new Dot(point.getX(), point.getY(), 10);
 
@@ -36,6 +37,10 @@ public class Final_Project {
             }
             System.out.println(listOfDots);
         }
+=======
+        
+        Dot dot = new Dot(point.getX(), point.getY(), 5);
+>>>>>>> Stashed changes
 
 
     }

@@ -11,4 +11,7 @@ public class Dot extends Ellipse {
         super.setFillColor(Color.BLACK);
     }
     
+        
+    
+
 }
