@@ -3,15 +3,31 @@ package race;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import edu.macalester.graphics.Point;
 
 public class Kruskal {
 
     public static void main(String[] args) {
         float[][] g = new float[][]{{1,3},{1,4},{2,5},{4,5},{2,7},{2,3},{0,2}};
-        Kruskal.Kruskal(g,0,2);
-        Kruskal.Kruskal(g,2,0);
+        //Kruskal.Kruskal(g,0,2);
+        //Kruskal.Kruskal(g,2,0);
     }
-    private static void Kruskal(float[][] g, int start, int end){
+
+    static List<Point> getKruskalPath(List<Point> points, int start, int end){
+        double[][] g = new double[points.size()][2];
+        for (int i = 0; i < g.length; i++) {
+            g[i] = new double[] {points.get(i).getX(), points.get(i).getY()};
+        }
+
+        List<Integer> path = Kruskal(g, start, end);
+        List<Point> pointPath = new ArrayList<>();
+        for (Integer integer : path) {
+            pointPath.add(points.get(integer));
+        }
+        return pointPath;
+    }
+
+    private static List<Integer> Kruskal(double[][] g, int start, int end){
         /*
           Add lowest val edge
           Add next lowest val edge that adds a point
@@ -41,7 +57,7 @@ public class Kruskal {
             System.out.println("added edge: " + Arrays.toString(lowestEdge));
             System.out.println("length: "+ edges[lowestEdge[0]][lowestEdge[1]]);
         }
-        reconstructPath(vertices,start,end);
+        return reconstructPath(vertices,start,end);
     }
 
     /**
@@ -142,7 +158,7 @@ public class Kruskal {
         return coords;
     }
 
-    private static double[][] calcEdges(float[][] g){
+    private static double[][] calcEdges(double[][] g){
         double[][] weights = new double[g.length][g.length];
 
         for (int i = 0; i < g.length; i++) {
