@@ -13,26 +13,43 @@ public class Final_Project {
     private static CanvasWindow canvas;
     private static ArrayList<Point> listOfDots;
     private static Button calcPath;
+    private static Button restartButton;
     private static List<Point> orderedPoints;
 
 
     public static void main(String[] args) {
+
+        // Our canvas object and setting canvas color
         canvas = new CanvasWindow("Race", 1000, 1000);
-        listOfDots = new ArrayList<>();
-
-
         Color skyBlue = new Color(135, 206, 235);
         canvas.setBackground(skyBlue);
 
+        runner();
+    }
+
+    private static void runner() {
+
+        // Initialize global arrayList of dots
+        listOfDots = new ArrayList<>();
+
+        // Initializing and positioning buttons
         calcPath = new Button("Start");
         calcPath.setCenter(500, 700);
+        restartButton = new Button("Restart");
+        restartButton.setCenter(500, 700);
+
+        // Lambda statements
         canvas.onClick(event -> placeDots(event.getPosition()));
         calcPath.onClick(() -> startButton(listOfDots));
+        restartButton.onClick(() -> restartButton());
     }
 
     private static void placeDots(Point point) {
+
+        Dot dot;
+
         if (listOfDots.size() < 15) {
-            Dot dot = new Dot(point.getX(), point.getY(), 10);
+            dot = new Dot(point.getX(), point.getY(), 10);
 
             canvas.add(dot);
             listOfDots.add(point);
@@ -42,14 +59,16 @@ public class Final_Project {
             }
             System.out.println(listOfDots);
         }
-
-
     }
 
+
     private static void startButton(ArrayList<Point> pointList) {
+        canvas.remove(calcPath);
+        canvas.add(restartButton);
 
         orderedPoints = Kruskal.getKruskalPath(pointList, 0,pointList.size()-1);
         Line line;
+
         for (int i = 0; i < orderedPoints.size() - 2; i++) {
             line = new Line(orderedPoints.get(i), orderedPoints.get(i+1));
             line.setStrokeWidth(5);
@@ -57,5 +76,12 @@ public class Final_Project {
             canvas.add(line);
         }
 
+    }
+
+
+    private static void restartButton() {
+        canvas.removeAll();
+        // canvas.closeWindow();
+        runner();
     }
 }
