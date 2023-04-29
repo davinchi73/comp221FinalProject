@@ -29,13 +29,12 @@ public class NearestNeighbour {
     public static List<Point> getNearestNeighbourPath(List<Point> points, Point source, Point target) {
         List<Point> path = new ArrayList<>();
 
-        // System.out.println(source);
+        Point currentPoint = source;
+
         points.remove(source);
         points.remove(target);
-
-        Point currentPoint = source;
+    
         path.add(currentPoint);
-        System.out.println(currentPoint);
 
         while (points.size() > 0) {
             Point nearestNeighbour = getNearestNeighbour(points, currentPoint);
@@ -45,7 +44,7 @@ public class NearestNeighbour {
         }
 
         path.add(target);
-        System.out.println(path);
+        
         return path;
     }
 
