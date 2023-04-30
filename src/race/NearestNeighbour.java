@@ -3,14 +3,14 @@ package race;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-// import edu.macalester.graphics.Point;
+import edu.macalester.graphics.Point;
 
 public class NearestNeighbour {
 
 
     public static void main(String[] args) {
         
-        List<Point> points = Arrays.asList(new Point(1, 0), new Point(2, 1), new Point(3, 2), new Point(4, 2), new Point(5, 2) );
+        List<Point> points = new ArrayList<>(Arrays.asList(new Point(1, 0), new Point(2, 1), new Point(3, 2), new Point(4, 2), new Point(5, 2) ));
 
         Point source = points.get(0);
         Point target = points.get(points.size() - 1);
