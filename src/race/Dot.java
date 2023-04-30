@@ -10,8 +10,4 @@ public class Dot extends Ellipse {
         super(xpos, ypos, radius, radius);
         super.setFillColor(Color.BLACK);
     }
-    
-        
-    
-
 }
