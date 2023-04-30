@@ -142,9 +142,18 @@ public class Kruskal {
                     return false;
                 }
             }
+            if (vertices[currVertex].getNumOfConnections()==0)
+                return true;
             if (prevVertex == vertices[currVertex].connections.get(0)) {
                 if (vertices[currVertex].getNumOfConnections() == 1) {
-                    return true;
+                    boolean b = currVertex==edge[0];
+                    int index = b ? 1:0;
+                    if (b||currVertex==edge[1]){ //probably a way to make this better
+                        prevVertex = currVertex;
+                        currVertex = edge[index];
+                        edgeCount++;
+                        continue;
+                    } else return true;
                 }
                 prevVertex = currVertex;
                 currVertex = vertices[currVertex].connections.get(1);
