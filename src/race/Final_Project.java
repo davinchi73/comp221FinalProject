@@ -23,10 +23,13 @@ public class Final_Project {
     private static Button calcPath;
     private static Button calcPathNN;
     private static GraphicsText timeCalc = new GraphicsText("Time to run at 5MPH: ");
-    private static List<Point> orderedPoints;
-    private static List<Point> orderedPointsNN;
+    private static ArrayList<Point> orderedPoints;
+    private static ArrayList<Point> orderedPointsNN;
     private static boolean startClicked = false;
+    private static boolean kruskalAdded = false;
+    private static boolean NNAdded = false;
     private static double timeKruskal;
+    private static double timeNN;
 
     private static GraphicsGroup kruskalGraphicsGroup;
     private static GraphicsGroup NNGraphicsGroup;
@@ -63,6 +66,11 @@ public class Final_Project {
         calcPathNN.setCenter(700, 175);
         timeCalc.setCenter(100, 100);
         timeKruskal = 0.0;
+        timeNN = 0.0;
+
+        // Initializing ordered points
+        orderedPoints = new ArrayList<>();
+        orderedPointsNN = new ArrayList<>();
 
         // Initializing graphicsgroups
         kruskalGraphicsGroup = new GraphicsGroup();
@@ -70,9 +78,10 @@ public class Final_Project {
 
         // Lambda statements
         canvas.onClick(event -> placeDots(event.getPosition(), listOfDots));
-        startButton.onClick(() -> startButton());
+        startButton.onClick(() -> startButton(listOfDots, orderedPoints, orderedPointsNN));
         restartButton.onClick(() -> restartButton());
         calcPath.onClick(() -> calcPath(listOfDots, true));
+        calcPathNN.onClick(() -> calcPath(listOfDots, false));
     }
 
     /*
@@ -97,13 +106,45 @@ public class Final_Project {
     /*
      * Method to handle onClick lambda for start button
      */
-    private static void startButton() {
+    private static void startButton(ArrayList<Point> pointList, List<Point> orderedPoints, List<Point> orderedPointsNN) {
         startClicked = true;
         canvas.remove(startButton);
         canvas.add(restartButton);
         canvas.add(calcPath);
         canvas.add(calcPathNN);
         canvas.add(timeCalc);
+        orderedPoints = Kruskal.getKruskalPath(pointList, 0, pointList.size()-1);
+        orderedPointsNN = NearestNeighbour.getNearestNeighbourPath(pointList, pointList.get(0), pointList.get(pointList.size() - 1));
+
+        Line line;
+        Line lineNN;
+
+        for (int i = 0; i < orderedPoints.size() - 1; i++) {
+
+            line = new Line(orderedPoints.get(i).getX() + 5, orderedPoints.get(i).getY() + 5, 
+            orderedPoints.get(i+1).getX() + 5, orderedPoints.get(i+1).getY() + 5);
+
+            lineNN = new Line(orderedPointsNN.get(i).getX() + 5, orderedPointsNN.get(i).getY() + 5, 
+            orderedPointsNN.get(i+1).getX() + 5, orderedPointsNN.get(i+1).getY() + 5);
+
+
+            line.setStrokeWidth(5);
+            line.setStrokeColor(Color.blue);
+            kruskalGraphicsGroup.add(line);
+
+            lineNN.setStrokeWidth(5);
+            lineNN.setStrokeColor(Color.red);
+            NNGraphicsGroup.add(lineNN);
+
+
+            timeKruskal += Math.hypot((orderedPoints.get(i).getX() + 5) - (orderedPoints.get(i+1).getX() + 5),
+            (orderedPoints.get(i).getY() + 5) - (orderedPoints.get(i+1).getY() + 5)) * 5;
+
+            timeNN += Math.hypot((orderedPointsNN.get(i).getX() + 5) - (orderedPointsNN.get(i+1).getX() + 5),
+            (orderedPointsNN.get(i).getY() + 5) - (orderedPointsNN.get(i+1).getY() + 5)) * 5;
+
+        }
+        
     }
 
     /*
@@ -111,6 +152,8 @@ public class Final_Project {
      */
     private static void restartButton() {
         startClicked = false;
+        kruskalAdded = false;
+        NNAdded = false;
         canvas.removeAll();
         kruskalGraphicsGroup.removeAll();
         NNGraphicsGroup.removeAll();
@@ -122,34 +165,61 @@ public class Final_Project {
      */
     private static void calcPath(ArrayList<Point> pointList, boolean kruskalYes) {
 
-        orderedPoints = Kruskal.getKruskalPath(pointList, 0, pointList.size()-1);
-        // orderedPointsNN = NearestNeighbour.getNearestNeighbourPath(pointList, pointList.get(0), pointList.get(pointList.size() - 1));
-
-        Line line;
-
-        for (int i = 0; i < orderedPoints.size() - 1; i++) {
-
-            line = new Line(orderedPoints.get(i).getX() + 5, orderedPoints.get(i).getY() + 5, 
-            orderedPoints.get(i+1).getX() + 5, orderedPoints.get(i+1).getY() + 5);
-
-            line.setStrokeWidth(5);
-            line.setStrokeColor(Color.gray);
-            kruskalGraphicsGroup.add(line);
-
-            timeKruskal += Math.hypot((orderedPoints.get(i).getX() + 5) - (orderedPoints.get(i+1).getX() + 5),
-            (orderedPoints.get(i).getY() + 5) - (orderedPoints.get(i+1).getY() + 5)) * 5;
+        if (kruskalAdded == true) {
+            canvas.remove(kruskalGraphicsGroup);
+            kruskalAdded = false;
+        } 
+        
+        else if (NNAdded == true) {
+            canvas.remove(NNGraphicsGroup);
+            NNAdded = false;
         }
 
+        // orderedPoints = Kruskal.getKruskalPath(pointList, 0, pointList.size()-1);
+        // orderedPointsNN = NearestNeighbour.getNearestNeighbourPath(pointList, pointList.get(0), pointList.get(pointList.size() - 1));
+
+        // Line line;
+        // Line lineNN;
+
+        // for (int i = 0; i < orderedPoints.size() - 1; i++) {
+
+        //     line = new Line(orderedPoints.get(i).getX() + 5, orderedPoints.get(i).getY() + 5, 
+        //     orderedPoints.get(i+1).getX() + 5, orderedPoints.get(i+1).getY() + 5);
+
+        //     lineNN = new Line(orderedPointsNN.get(i).getX() + 5, orderedPointsNN.get(i).getY() + 5, 
+        //     orderedPointsNN.get(i+1).getX() + 5, orderedPointsNN.get(i+1).getY() + 5);
+
+
+        //     line.setStrokeWidth(5);
+        //     line.setStrokeColor(Color.gray);
+        //     kruskalGraphicsGroup.add(line);
+
+        //     lineNN.setStrokeWidth(5);
+        //     lineNN.setStrokeColor(Color.gray);
+        //     NNGraphicsGroup.add(lineNN);
+
+
+        //     timeKruskal += Math.hypot((orderedPoints.get(i).getX() + 5) - (orderedPoints.get(i+1).getX() + 5),
+        //     (orderedPoints.get(i).getY() + 5) - (orderedPoints.get(i+1).getY() + 5)) * 5;
+
+        //     timeNN += Math.hypot((orderedPointsNN.get(i).getX() + 5) - (orderedPointsNN.get(i+1).getX() + 5),
+        //     (orderedPointsNN.get(i).getY() + 5) - (orderedPointsNN.get(i+1).getY() + 5)) * 5;
+
+        // }
+
         if (kruskalYes == true) {
+
             timeCalc.setText(timeCalc.getText() + Double.toString(timeKruskal) + " seconds");
             canvas.add(timeCalc);
-
+            kruskalAdded = true;
             canvas.add(kruskalGraphicsGroup);
+
         } else {
-            timeCalc.setText(timeCalc.getText() + Double.toString(timeKruskal) + " seconds");
-            canvas.add(timeCalc);
 
-            canvas.add(kruskalGraphicsGroup);
+            timeCalc.setText(timeCalc.getText() + Double.toString(timeNN) + " seconds");
+            canvas.add(timeCalc);
+            NNAdded = true;
+            canvas.add(NNGraphicsGroup);
         }
     }
 }
