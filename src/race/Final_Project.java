@@ -22,7 +22,8 @@ public class Final_Project {
     private static Button restartButton;
     private static Button calcPath;
     private static Button calcPathNN;
-    private static GraphicsText timeCalc = new GraphicsText("Time to run at 5MPH: ");
+    private static GraphicsText timeCalc = new GraphicsText("Time to run at 5PPS: ");
+    private static GraphicsText startText = new GraphicsText("Click on the screen to add dots (range = 8 - 15 dots)");
     private static ArrayList<Point> orderedPoints;
     private static ArrayList<Point> orderedPointsNN;
     private static boolean startClicked = false;
@@ -41,6 +42,8 @@ public class Final_Project {
         canvas = new CanvasWindow("Race", 1000, 1000);
         Color skyBlue = new Color(135, 206, 235);
         canvas.setBackground(skyBlue);
+        timeCalc.setCenter(100, 100);
+        startText.setCenter(500, 200);
 
         // call to runner
         runner();
@@ -60,11 +63,13 @@ public class Final_Project {
         startButton.setCenter(500, 100);
         restartButton = new Button("Restart");
         restartButton.setCenter(500, 100);
-        calcPath = new Button("Display Path: Kruskal");
+        calcPath = new Button("Display Path: (Modified) Kruskal");
         calcPath.setCenter(700, 100);
         calcPathNN = new Button("Display Path: Nearest Neighbors");
         calcPathNN.setCenter(700, 175);
-        timeCalc.setCenter(100, 100);
+        timeCalc.setText("Time to run at 5PPS: ");
+        canvas.add(startText);
+
         timeKruskal = 0.0;
         timeNN = 0.0;
 
@@ -95,7 +100,6 @@ public class Final_Project {
 
             canvas.add(dot);
             dotList.add(point);
-    
             if (dotList.size() == 8) {
                 canvas.add(startButton);
             }
@@ -109,6 +113,7 @@ public class Final_Project {
     private static void startButton(ArrayList<Point> pointList, List<Point> orderedPoints, List<Point> orderedPointsNN) {
         startClicked = true;
         canvas.remove(startButton);
+        canvas.remove(startText);
         canvas.add(restartButton);
         canvas.add(calcPath);
         canvas.add(calcPathNN);
@@ -206,6 +211,8 @@ public class Final_Project {
         //     (orderedPointsNN.get(i).getY() + 5) - (orderedPointsNN.get(i+1).getY() + 5)) * 5;
 
         // }
+        
+        timeCalc.setText("Time to run at 5PPS: ");
 
         if (kruskalYes == true) {
 
