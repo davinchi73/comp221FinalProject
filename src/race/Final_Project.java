@@ -24,6 +24,8 @@ public class Final_Project {
     private static Button calcPathNN;
     private static GraphicsText timeCalc = new GraphicsText("Time to run at 5PPS: ");
     private static GraphicsText startText = new GraphicsText("Click on the screen to add dots (range = 8 - 15 dots)");
+    private static GraphicsText start = new GraphicsText("Start");
+    private static GraphicsText end = new GraphicsText("End");
     private static ArrayList<Point> orderedPoints;
     private static ArrayList<Point> orderedPointsNN;
     private static boolean startClicked = false;
@@ -56,7 +58,7 @@ public class Final_Project {
 
         // Initialize global arrayList of dots
         ArrayList<Point> listOfDots = new ArrayList<>();
-        System.out.println(listOfDots);
+        // System.out.println(listOfDots);
 
         // Initializing and positioning buttons / texts
         startButton = new Button("Start");
@@ -103,7 +105,7 @@ public class Final_Project {
             if (dotList.size() == 8) {
                 canvas.add(startButton);
             }
-            System.out.println(dotList);
+            // System.out.println(dotList);
         }
     }
 
@@ -125,6 +127,16 @@ public class Final_Project {
         Line lineNN;
 
         for (int i = 0; i < orderedPoints.size() - 1; i++) {
+
+            if (i == 0) {
+                start.setCenter(orderedPoints.get(i).getX() + 5, orderedPoints.get(i).getY() - 10);
+                canvas.add(start);
+            }
+
+            if (i == orderedPoints.size() - 2) {
+                end.setCenter(orderedPoints.get(i+1).getX() + 5, orderedPoints.get(i+1).getY() - 10);
+                canvas.add(end);
+            }
 
             line = new Line(orderedPoints.get(i).getX() + 5, orderedPoints.get(i).getY() + 5, 
             orderedPoints.get(i+1).getX() + 5, orderedPoints.get(i+1).getY() + 5);
@@ -179,38 +191,6 @@ public class Final_Project {
             canvas.remove(NNGraphicsGroup);
             NNAdded = false;
         }
-
-        // orderedPoints = Kruskal.getKruskalPath(pointList, 0, pointList.size()-1);
-        // orderedPointsNN = NearestNeighbour.getNearestNeighbourPath(pointList, pointList.get(0), pointList.get(pointList.size() - 1));
-
-        // Line line;
-        // Line lineNN;
-
-        // for (int i = 0; i < orderedPoints.size() - 1; i++) {
-
-        //     line = new Line(orderedPoints.get(i).getX() + 5, orderedPoints.get(i).getY() + 5, 
-        //     orderedPoints.get(i+1).getX() + 5, orderedPoints.get(i+1).getY() + 5);
-
-        //     lineNN = new Line(orderedPointsNN.get(i).getX() + 5, orderedPointsNN.get(i).getY() + 5, 
-        //     orderedPointsNN.get(i+1).getX() + 5, orderedPointsNN.get(i+1).getY() + 5);
-
-
-        //     line.setStrokeWidth(5);
-        //     line.setStrokeColor(Color.gray);
-        //     kruskalGraphicsGroup.add(line);
-
-        //     lineNN.setStrokeWidth(5);
-        //     lineNN.setStrokeColor(Color.gray);
-        //     NNGraphicsGroup.add(lineNN);
-
-
-        //     timeKruskal += Math.hypot((orderedPoints.get(i).getX() + 5) - (orderedPoints.get(i+1).getX() + 5),
-        //     (orderedPoints.get(i).getY() + 5) - (orderedPoints.get(i+1).getY() + 5)) * 5;
-
-        //     timeNN += Math.hypot((orderedPointsNN.get(i).getX() + 5) - (orderedPointsNN.get(i+1).getX() + 5),
-        //     (orderedPointsNN.get(i).getY() + 5) - (orderedPointsNN.get(i+1).getY() + 5)) * 5;
-
-        // }
         
         timeCalc.setText("Time to run at 5PPS: ");
 
