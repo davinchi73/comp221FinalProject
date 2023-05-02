@@ -91,4 +91,10 @@ public class FunnyFace {
         mouth.setStrokeWidth(4);
         return mouth;
     }
+
+    // public static void main(String[] args) {
+    //     CanvasWindow canvas = new CanvasWindow(null, 01000, 01000);
+    //     GraphicsGroup smileyFace = createSmileyFace(25);
+    //     canvas.add(smileyFace);
+    // }
 }

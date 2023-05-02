@@ -7,6 +7,8 @@ import edu.macalester.graphics.Line;
 import edu.macalester.graphics.Point;
 import edu.macalester.graphics.ui.Button;
 import edu.macalester.graphics.GraphicsGroup;
+import edu.macalester.graphics.GraphicsObject;
+
 import java.awt.Color;
 import java.util.List;
 import java.util.ArrayList;
@@ -28,11 +30,15 @@ public class Final_Project {
     private static GraphicsText end = new GraphicsText("End");
     private static ArrayList<Point> orderedPoints;
     private static ArrayList<Point> orderedPointsNN;
+    private static List<Point> orderedPointsAnimation;
+    private static List<Point> orderedPointsAnimationNN;
     private static boolean startClicked = false;
     private static boolean kruskalAdded = false;
     private static boolean NNAdded = false;
+    private static boolean emojiOnScreen = false;
     private static double timeKruskal;
     private static double timeNN;
+    private static GraphicsGroup emoji;
 
     private static GraphicsGroup kruskalGraphicsGroup;
     private static GraphicsGroup NNGraphicsGroup;
@@ -46,6 +52,7 @@ public class Final_Project {
         canvas.setBackground(skyBlue);
         timeCalc.setCenter(100, 100);
         startText.setCenter(500, 200);
+        emoji = FunnyFace.createSmileyFace(25);
 
         // call to runner
         runner();
@@ -78,6 +85,8 @@ public class Final_Project {
         // Initializing ordered points
         orderedPoints = new ArrayList<>();
         orderedPointsNN = new ArrayList<>();
+        orderedPointsAnimation = new ArrayList<>();
+        orderedPointsAnimationNN = new ArrayList<>();
 
         // Initializing graphicsgroups
         kruskalGraphicsGroup = new GraphicsGroup();
@@ -105,7 +114,6 @@ public class Final_Project {
             if (dotList.size() == 8) {
                 canvas.add(startButton);
             }
-            // System.out.println(dotList);
         }
     }
 
@@ -122,6 +130,8 @@ public class Final_Project {
         canvas.add(timeCalc);
         orderedPoints = Kruskal.getKruskalPath(pointList, 0, pointList.size()-1);
         orderedPointsNN = NearestNeighbour.getNearestNeighbourPath(pointList, pointList.get(0), pointList.get(pointList.size() - 1));
+        orderedPointsAnimation = orderedPoints;
+        orderedPointsAnimationNN = orderedPointsNN;
 
         Line line;
         Line lineNN;
@@ -171,6 +181,7 @@ public class Final_Project {
         startClicked = false;
         kruskalAdded = false;
         NNAdded = false;
+        emojiOnScreen = false;
         canvas.removeAll();
         kruskalGraphicsGroup.removeAll();
         NNGraphicsGroup.removeAll();
@@ -200,6 +211,8 @@ public class Final_Project {
             canvas.add(timeCalc);
             kruskalAdded = true;
             canvas.add(kruskalGraphicsGroup);
+            runOnThePath(emoji, orderedPointsAnimation);
+
 
         } else {
 
@@ -207,6 +220,92 @@ public class Final_Project {
             canvas.add(timeCalc);
             NNAdded = true;
             canvas.add(NNGraphicsGroup);
+            runOnThePath(emoji, orderedPointsAnimationNN);
         }
+
+        
+    }
+
+
+    /**
+     * This method will add a little face that will follow along the path shown on the canvas
+     */
+    private static void runOnThePath(GraphicsGroup face, List<Point> pointPath) {
+        //make sure the emoji is not already on screen
+        if (emojiOnScreen) {
+            emojiOnScreen = false;
+            canvas.remove(face);
+        }
+
+        //place the emoji on the screen at the starting point
+        face.setCenter(pointPath.get(0));
+        canvas.add(face);
+        emojiOnScreen = true;
+
+        //for every point in the path
+        for (int i = 1; i < pointPath.size(); i++) {
+            //grab the distance the face is from the x and y of the next point
+            double xDistance = face.getX() - pointPath.get(i).getX();
+            double yDistance = face.getY() - pointPath.get(i).getY();
+
+            //these are multipliers so the emoji travels the x and y plane at the same speed
+            //based on ratios
+            double xMultiplier = 1;
+            double yMultiplier = 1;
+
+            //these will give us our ratios to multiply the multipliers
+            if (Math.abs(xDistance) > Math.abs(yDistance)) {
+
+                yMultiplier = Math.abs(yDistance) / Math.abs(xDistance);
+
+            } else if (Math.abs(yDistance) > Math.abs(xDistance)) {
+
+                xMultiplier = Math.abs(xDistance) / Math.abs(yDistance);
+
+            } else {
+                continue;
+            }
+
+            //this will tell us which direction we need to go
+            if (xDistance > 0 ) {
+                xMultiplier = xMultiplier * -1;
+            }
+            if (yDistance > 0) {
+                yMultiplier = yMultiplier * -1;
+            }
+
+            //the the face is not around the previous point
+            while (face.getCenter() != pointPath.get(i)) {
+                //animate the face towards the next point
+                face.setX(face.getX() + xMultiplier);
+                face.setY(face.getY() + yMultiplier);
+                canvas.draw();
+
+                //the if statements will determine if the face is near the points
+                if (xDistance > 0 && yDistance > 0) {
+                    if (face.getX() <= pointPath.get(i).getX() || face.getY() <= pointPath.get(i).getY()) {
+                        break;
+                    }
+                }
+                if (xDistance < 0 && yDistance > 0) {
+                    if (face.getX() >= pointPath.get(i).getX() || face.getY() <= pointPath.get(i).getY()) {
+                        break;
+                    }
+                }
+                if (xDistance > 0 && yDistance < 0) {
+                    if (face.getX() <= pointPath.get(i).getX() || face.getY() >= pointPath.get(i).getY()) {
+                        break;
+                    }
+                }
+                if (xDistance < 0 && yDistance < 0) {
+                    if (face.getX() >= pointPath.get(i).getX() || face.getY() >= pointPath.get(i).getY()) {
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        
     }
 }
